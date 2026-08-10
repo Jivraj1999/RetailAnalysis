@@ -1,24 +1,35 @@
 pipeline {
     agent any
     
+    environment {
+        LABS = credentials('labcreds')
+    }
+
     stages {
         stage('Build') {
             steps {
+                sh 'pip3 install --user pipenv'
+                sh '/usr/bin/pipenv --rm || exit 0'
+                sh '/usr/bin/pipenv install'
                 echo "Build Successful"
             }
         }
         stage('Test') {
             steps {
+                sh '/usr/bin/pipenv run pytest'
                 echo "Test Successful"
             }
         }
         stage('Package') {
             steps {
-                 echo "Package Successful"
+                sh 'zip -r retailproject.zip .'
+                echo "Package Successful"
             }
         }
         stage('Deploy') {
             steps {
+                sh 'sshpass -p $LABS_PSW scp -o StrictHostKeyChecking=no -r .
+                $LABS_USR@g02.itversity.com:/home/itv025615/retailproject'
                 echo "Deployment Successful"
             }
         }
