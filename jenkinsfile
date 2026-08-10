@@ -16,7 +16,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'pipenv run pytest'
+                sh 'pipenv run python -m pytest'
                 echo 'Test Successful'
             }
         }
