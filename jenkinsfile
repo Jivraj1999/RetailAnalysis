@@ -9,8 +9,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                pipenv --rm || true
-                pipenv --python /usr/bin/python3
                 pipenv install --dev
                 '''
                 echo 'Build Successful'
